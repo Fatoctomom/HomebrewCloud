@@ -1,7 +1,7 @@
 package Tangwing.Cloud;
 
-import Tangwing.Cloud.model.FileMetaData;
-import Tangwing.Cloud.repo.FileMetaDataRepository;
+import Tangwing.Cloud.FileMetaData;
+import Tangwing.Cloud.FileRepository;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
