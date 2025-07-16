@@ -15,7 +15,7 @@ public class FileMetaData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
-    private String filename;
+    private String fileName;
     private String Path;
     private Long size;
     private LocalDateTime uploadedAt;
