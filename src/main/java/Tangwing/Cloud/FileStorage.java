@@ -1,7 +1,7 @@
 package Tangwing.Cloud.service;
 
-import Tangwing.Cloud.FileMetaData;
-import Tangwing.Cloud.FileRepository;
+import Tangwing.Cloud.FileMetaData.FileMetaData;
+import Tangwing.Cloud.FileRepository.FileRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FileStorage {
-    private final FileMetaDataRepository repository;
+    private final FileRepository repository;
 
     private final Path storagePath = Paths.get("/mnt/storage");
 
