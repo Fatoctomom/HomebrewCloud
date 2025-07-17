@@ -1,7 +1,7 @@
-package Tangwing.Cloud.service;
+package Tangwing.Cloud;
 
-import Tangwing.Cloud.FileMetaData.FileMetaData;
-import Tangwing.Cloud.FileRepository.FileRepository;
+import Tangwing.Cloud.FileMetaData;
+import Tangwing.Cloud.FileRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
