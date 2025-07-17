@@ -1,4 +1,4 @@
-package Tangwing.Cloud.FileMetaData;
+package Tangwing.Cloud;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +16,7 @@ public class FileMetaData {
     private long id;
     
     private String fileName;
-    private String Path;
+    private String path;
     private Long size;
     private LocalDateTime uploadedAt;
 }

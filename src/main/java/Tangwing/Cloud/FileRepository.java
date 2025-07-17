@@ -1,9 +1,9 @@
-package Tangwing.Cloud.FileRepository;
+package Tangwing.Cloud;
 
-import Tangwing.Cloud.FileMetaData.FileMetaData;
+import Tangwing.Cloud.FileMetaData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FileRepository extends JpaRepository<FileMetaData, Long> 
 {
-    boolean existsByFilename(String filename);
+    boolean existsByFileName(String fileName);
 }
