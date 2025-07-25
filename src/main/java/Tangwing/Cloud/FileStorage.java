@@ -48,7 +48,7 @@ public class FileStorage {
     public void deleteFile(String fileName) throws IOException {
         Path file = storagePath.resolve(fileName);
         Files.deleteIfExists(file);
-        repository.deleteALL(repository.findAll().stream()
+        repository.deleteAll(repository.findAll().stream()
             .filter(meta -> meta.getFileName().equals(fileName))
             .toList());
     }
