@@ -49,7 +49,7 @@ public class FileController {
     @DeleteMapping("/{fileName}")
     public ResponseEntity<Void> deleteFile(@PathVariable String fileName) throws IOException {
         fileStorage.deleteFile(fileName);
-        return ResponseEntity.noContent().build()
+        return ResponseEntity.noContent().build();
     }
 }
 
