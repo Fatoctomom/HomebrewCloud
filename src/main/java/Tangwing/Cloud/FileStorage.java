@@ -40,7 +40,7 @@ public class FileStorage {
         return repository.findAll();
     }
 
-    public byte[] getFileContent(String fileName) throws IOException {
+    public byte[] getFile(String fileName) throws IOException {
         Path file = storagePath.resolve(fileName);
         return Files.readAllBytes(file);
     }
