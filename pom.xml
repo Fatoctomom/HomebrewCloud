@@ -85,6 +85,11 @@
     		<artifactId>sqlite-jdbc</artifactId>
     		<version>3.42.0.0</version>
 		</dependency>
+		<dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-community-dialects</artifactId>
+            <version>6.2.7.Final</version>
+        </dependency>
 	</dependencies>
 
 	<build>
