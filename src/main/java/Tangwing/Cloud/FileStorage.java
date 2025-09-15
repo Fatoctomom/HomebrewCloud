@@ -14,7 +14,7 @@ import java.util.List;
 public class FileStorage {
     private final FileRepository repository;
 
-    private final Path storagePath = Paths.get("/mnt/storage");
+    private final Path storagePath = Paths.get("/opt/minicloud/mnt/storage");
 
     public FileMetaData saveFile(MultipartFile file) throws IOException {
             if (!Files.exists(storagePath)) {
