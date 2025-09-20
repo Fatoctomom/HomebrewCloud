@@ -38,7 +38,7 @@ public class FileStorage {
     }
 
     public FileMetaData getFileData(String fileName) throws IOException {
-        return repository.findByFilename(fileName);
+        return repository.findByFileName(fileName);
     }
 
     public byte[] getFile(String fileName) throws IOException {

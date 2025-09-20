@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -76,9 +77,9 @@ public class FileControllerSQLiteTest {
             MediaType.TEXT_PLAIN_VALUE,
             "hello world!".getBytes(StandardCharsets.UTF_8)
         );
-            mockMvc.perform(multipart("/api/files/upload").file(file))
+            
+            mockMvc.perform(multipart(HttpMethod.POST,"/api/files").file(file))
             .andExpect(status().isOk())
-            //.andExpect(status().isCreated())
             .andExpect(jsonPath("$.fileName").value("testfile.txt"));
     }
 
@@ -93,7 +94,7 @@ public class FileControllerSQLiteTest {
         Mockito.when(fileStorage.listFiles())
             .thenAnswer(inv -> fileRepo.findAll());
 
-        mockMvc.perform(get("/api/files/list"))
+        mockMvc.perform(get("/api/files"))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$", hasSize(2)))
@@ -102,15 +103,34 @@ public class FileControllerSQLiteTest {
 
     }
 
-
     @Test
     @Order(3)
+    void testRetrieveFile() throws Exception {
+        fileRepo.saveAll(List.of(
+                FileMetaData.builder().fileName("a.txt").path("").size(1L).uploadedAt(LocalDateTime.now()).build(),
+                FileMetaData.builder().fileName("b.txt").path("").size(2L).uploadedAt(LocalDateTime.now()).build()
+        ));
+        
+        Mockito.when(fileStorage.getFileData("a.txt"))
+            .thenAnswer(inv -> fileRepo.findByFileName("a.txt"));
+
+        
+            mockMvc.perform(get("/api/files/a.txt"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.fileName").value("a.txt"))
+            .andExpect(jsonPath("$.size").value(1L))
+            .andExpect(jsonPath("$.uploadedAt").exists());
+    }
+
+    @Test
+    @Order(4)
     void testDownloadFile() throws Exception {
         // Download
         byte[] payload = "hello world!".getBytes(StandardCharsets.UTF_8);
         Mockito.when(fileStorage.getFile(eq("testfile.txt"))).thenReturn(payload);
         
-        mockMvc.perform(get("/api/files/download/testfile.txt"))
+        mockMvc.perform(get("/api/files/testfile.txt/download"))
         .andExpect(status().isOk())
         .andExpect(header().string("Content-Disposition", "attachment; filename=\"testfile.txt\""))
         .andExpect(content().bytes(payload))
@@ -118,7 +138,7 @@ public class FileControllerSQLiteTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     void testDeleteFile() throws Exception {
         //Deletion
         var meta = fileRepo.save(
@@ -140,7 +160,7 @@ public class FileControllerSQLiteTest {
             return null;
         }).when(fileStorage).deleteFile(eq("gone.txt"));
 
-        mockMvc.perform(delete("/api/files/delete/{fileName}", "gone.txt"))
+        mockMvc.perform(delete("/api/files/{fileName}", "gone.txt"))
         .andExpect(status().isNoContent());
 
         assertThat(fileRepo.findById(meta.getId())).isEmpty();

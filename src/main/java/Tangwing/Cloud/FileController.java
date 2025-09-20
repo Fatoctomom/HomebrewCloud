@@ -30,7 +30,7 @@ public class FileController {
     @PostMapping // for uploading files POST /api/files
 
     public ResponseEntity<FileMetaData> uploadFile(@RequestParam("file") MultipartFile file) throws IOException { // response Entity is meta data requires multipart file
-
+            
             FileMetaData savedMetaData = fileStorage.saveFile(file);
             if (savedMetaData != null) {
                 return ResponseEntity.ok(savedMetaData);
