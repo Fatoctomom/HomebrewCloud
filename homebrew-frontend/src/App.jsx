@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'; 
 import { listFiles, uploadFile, deleteFile, downloadFile } from './api';
-import UploadButton from './compnents/UploadButton';
+import UploadButton from './components/UploadButton';
 import fileRow from './components/FileRow';
 
 export default function App() {
   // states to hold data, and error and loading flags
+    console.log('In here like swimgear\n');
     const {files, setFiles} = useState([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState('');
@@ -23,7 +24,9 @@ export default function App() {
     };
 
     // 
+    console.log('boutta effect\n');
     useEffect(() => { refresh(); }, []);
+    console.log('finished effect\n');
 
     //event handlers
     const onUpload = async (file) => { await uploadFile(file); 
@@ -42,7 +45,7 @@ export default function App() {
     <h1>MiniCloud</h1>
     <p style={{opacity:0.75, marginTop:-8}}>Simple file browser</p>
 
-    <div style={{margin:'1rem 0'}}><UploadBox onUpload={onUpload} /></div>
+    <div style={{margin:'1rem 0'}}><UploadButton onUpload={onUpload} /></div>
 
     <div style={{border:'1px solid #eee', borderRadius:12, padding:'1rem'}}>
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:8}}>
