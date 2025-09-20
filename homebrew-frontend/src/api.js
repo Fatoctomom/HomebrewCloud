@@ -1,5 +1,7 @@
-const BASE = import.meta.env.VITE_API_BASE?.replace(/\/+$/, '') || '';
+const BASE = import.meta.env.VITE_API_BASE?.replace(/\/+$/, '') || ''; // holds the url for api requests replaces trailing slashes with ''
 
+
+// using resource-orientaed REST calls
 export async function listFiles() {
     const res = await fetch('${BASE}/api/files');
 
@@ -7,9 +9,16 @@ export async function listFiles() {
     return res.json();
 }
 
+export async function getFiles(fileName) {
+    const res = await fetch(`${BASE}/api/files/${encodeURIComponent(fileName)}`);
+
+    if (!res.ok) throw new Error('Failed to get files');
+    return res.json();
+}
+
 export async function uploadFile(file) {
-    const form = new FormData();
-    form.append('file', file);
+    const form = new FormData(); // forms a key value pair data payload
+    form.append('file', file); // {'file', (data of file here)}
     const res = await fetch('${BASE}/api/files', {
         method: 'POST',
         body: form,
@@ -19,22 +28,25 @@ export async function uploadFile(file) {
     return res.json?.() ?? null;
 }
 
-export async function deleteFile(name) {
-  const res = await fetch(`${BASE}/api/files/${encodeURIComponent(name)}`, {
+export async function deleteFile(fileName) {
+  const res = await fetch(`${BASE}/api/files/${encodeURIComponent(fileName)}`, {
     method: 'DELETE',
   });
   if (!res.ok) throw new Error('Delete failed');
 }
 
-export async function downloadFile(name) {
-    const res = await fetch(`${BASE}/api/files/${encodeURIComponent(name)}`);
+export async function downloadFile(fileName) {
+    const res = await fetch(`${BASE}/api/files/${encodeURIComponent(fileName)}/download`);
     if (!res.ok) throw new Error('Download failed');
 
-    const blob = await res.blob();
+    // create a blob url
+    const blob = await res.blob(); // blobs are raw immutable streams of data
     const url = URL.createObjectURL(blob);
+
+    //create hidden element a to trigger the download
     const a = document.createElement('a');
-    a.href = url
-    a.download = name;
+    a.href = url;
+    a.download = fileName;
     document.body.appendChild(a);
     a.click();
     a.remove();

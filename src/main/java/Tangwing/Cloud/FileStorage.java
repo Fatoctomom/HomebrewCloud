@@ -16,15 +16,15 @@ public class FileStorage {
 
     private final Path storagePath = Paths.get("/opt/minicloud/mnt/storage");
 
-    public FileMetaData saveFile(MultipartFile file) throws IOException {
-            if (!Files.exists(storagePath)) {
+    public FileMetaData saveFile(MultipartFile file) throws IOException { // saves files to persitant DB
+            if (!Files.exists(storagePath)) { // if hard coded directory doesnt exist create it
                 Files.createDirectories(storagePath);
             }
 
             Path target = storagePath.resolve(file.getOriginalFilename());
-            Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING); // copies data from file to target
 
-            FileMetaData metaData = FileMetaData.builder()
+            FileMetaData metaData = FileMetaData.builder() // builds a file metadata
                     .fileName(file.getOriginalFilename())
                     .path(target.toString())
                     .size(file.getSize())
@@ -35,6 +35,10 @@ public class FileStorage {
 
     public List<FileMetaData> listFiles() {
         return repository.findAll();
+    }
+
+    public FileMetaData getFileData(String fileName) throws IOException {
+        return repository.findByFilename(fileName);
     }
 
     public byte[] getFile(String fileName) throws IOException {
