@@ -5,7 +5,6 @@ const BASE = import.meta.env.VITE_API_BASE?.replace(/\/+$/, '') || ''; // holds 
 export async function listFiles() {
     const res = await fetch(`${BASE}/api/files`);
     console.log('Fetching list of files from:', `${BASE}/api/files`);
-    console.log('Response:', res.ok, res.status, res.statusText, res.url);
     if (!res.ok) throw new Error('Failed to list files');
     return res.json();
 }
