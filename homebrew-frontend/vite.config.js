@@ -9,7 +9,7 @@ export default defineConfig(({mode}) => {
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_API_BASE || 'http://localhost:8080',
+          target: env.VITE_API_BASE || 'http://tangwing:8080',
           changeOrigin: true,
         },
       },

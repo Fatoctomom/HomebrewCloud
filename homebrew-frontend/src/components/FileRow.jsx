@@ -1,5 +1,5 @@
-export default function fileRow({file, onDelete, onDownload}) {
-    const name = typeof file === 'string' ? file : (file.name ?? file.filename);
+export default function FileRow({file, onDelete, onDownload}) {
+    const name = typeof file === 'string' ? file : (file.fileName ?? null);
     const size = typeof file === 'object' && file.size != null ? file.size : null;
 
     return (

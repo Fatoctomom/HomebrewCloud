@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react'; 
 import { listFiles, uploadFile, deleteFile, downloadFile } from './api';
 import UploadButton from './components/UploadButton';
-import fileRow from './components/FileRow';
+import FileRow from './components/FileRow';
 
 export default function App() {
   // states to hold data, and error and loading flags
     console.log('In here like swimgear\n');
-    const {files, setFiles} = useState([]);
+    const [files, setFiles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState('');
 
     const refresh = async () => {
         setErr(''); 
         setLoading(true);
+        console.log('Refreshing...');
         try {
+            console.log('trying to list Data:');
             const data = await listFiles();
+            console.log('Data:', data.map(f => (typeof f === 'string' ? f : (f.fileName ?? f.name ?? '<unnamed>'))));
             setFiles(Array.isArray(data) ? data : (data?.files ?? [])); // store the all the files from db on load, this gunna create huge load times lol
         } catch (e) {
             setErr(e.message || 'failed to load');
@@ -23,10 +26,8 @@ export default function App() {
         }
     };
 
-    // 
-    console.log('boutta effect\n');
+    // intial refresh/ load
     useEffect(() => { refresh(); }, []);
-    console.log('finished effect\n');
 
     //event handlers
     const onUpload = async (file) => { await uploadFile(file); 
@@ -59,7 +60,7 @@ export default function App() {
 
       {!loading && !err && files.map(f => (
         <FileRow
-          key={typeof f === 'string' ? f : (f.name ?? f.filename)}
+          key={typeof f === 'string' ? f : (f.fileName ?? f.filename)}
           file={f}
           onDelete={onDelete}
           onDownload={onDownload}

@@ -3,8 +3,9 @@ const BASE = import.meta.env.VITE_API_BASE?.replace(/\/+$/, '') || ''; // holds 
 
 // using resource-orientaed REST calls
 export async function listFiles() {
-    const res = await fetch('${BASE}/api/files');
-
+    const res = await fetch(`${BASE}/api/files`);
+    console.log('Fetching list of files from:', `${BASE}/api/files`);
+    console.log('Response:', res.ok, res.status, res.statusText, res.url);
     if (!res.ok) throw new Error('Failed to list files');
     return res.json();
 }
@@ -19,7 +20,7 @@ export async function getFiles(fileName) {
 export async function uploadFile(file) {
     const form = new FormData(); // forms a key value pair data payload
     form.append('file', file); // {'file', (data of file here)}
-    const res = await fetch('${BASE}/api/files', {
+    const res = await fetch(`${BASE}/api/files`, {
         method: 'POST',
         body: form,
     });
